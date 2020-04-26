@@ -14,6 +14,13 @@ var words = [
 
 // Write a function uniqueArray that receives an array of words as a parameter. And remove the duplicates, and return a new array. 
 // (indexOf)
+let uniques = words.reduce((unique,word) => {
+  if(!unique.includes(word)) {
+    unique.push(word);
+  }
+  return unique;
+},[]);
+console.log(uniques);
 
 
 
@@ -29,7 +36,12 @@ var words2 = [
 ];
 
 // Write a function doesWordExist that will take in an array of words as one argument, and a word to search for as the other. Return true if it exists, otherwise, return false. Don't use indexOf for this one.
+function doesWordExist(words2,searchWord){
+  let wordExists = words2.reduce((doesExist,word)=> doesExist || word === searchWord ,false);
+  return wordExists;
+}
 
+console.log(doesWordExist(words2,"truthful"));
 
 
 
@@ -49,7 +61,12 @@ var words3 = [
 
 
 // Write a function howManyTimes that will take in an array of words as one argument, and a word to search for as the other. The function will return the number of times that word appears in the array.
+function howManyTimes(words,searchWord) {
+  let numberOfRepeats = words.reduce((count,word)=> word === searchWord ? ++count : count,0);
+  return numberOfRepeats;
+}
 
+console.log(howManyTimes(words3,"matter"));
 
 
 
@@ -73,6 +90,8 @@ let data = [
     pop: 263991379,
   }
 ]
+let population = data.reduce((population,nation) => nation.country !== "China" ? population + nation.pop : population,0);
+console.log(population);
 
 
 // Use reduce method and summorize the collection like
@@ -90,6 +109,15 @@ const fruitBasket = [
   'orange',
   'fig'
 ];
+let summary = fruitBasket.reduce((summary,fruit)=> {
+  if(fruit in summary) {
+    summary[fruit] = summary[fruit] + 1; 
+  } else {
+    summary[fruit] = 1;
+  }
+  return summary
+},{})
+console.log(summary);
 
 
 
@@ -118,3 +146,27 @@ var matrix = [
 ];
 // In the 20×20 grid above What is the greatest product of four adjacent numbers in the same direction (up, down, left, right)?
 // Write a function greatestProduct to find the answer!
+let possibleProducts = [];
+
+for(let i = 0; i < matrix.length; i++) {
+  for(let j = 0; j < matrix[i].length;j++) {
+    let productVertical = 0,productHorizontal = 0;
+    let product;
+      if((i === 0 && j === 0) || (i === 0 && j === matrix[i].length - 1) || (i === matrix.length - 1 && j === 0) || 
+      (i === matrix.length - 1 && j === matrix[i].length - 1)) {
+        continue;
+      } else if( i === 0 || i === matrix.length - 1){
+        productHorizontal = matrix[i][j-1] * matrix[i][j+1];
+      } else if( j === 0 || j === matrix[i].length - 1){
+        productVertical = matrix[i-1][j] * matrix[i+1][j];
+      } else {
+        productHorizontal = matrix[i][j-1] * matrix[i][j+1];
+        productVertical = matrix[i-1][j] * matrix[i+1][j];
+      }
+      product = Math.max(productHorizontal,productVertical);
+      possibleProducts.push({i,j,product})
+  }
+}
+
+let positionOfLargestProduct = possibleProducts.reduce((largestProduct,productObj) => productObj.product > largestProduct.product ? productObj : largestProduct,{product:1});
+console.log(positionOfLargestProduct);
