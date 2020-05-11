@@ -11,35 +11,77 @@
     <script>
       function countAllPeople() {
         // your code goes here
-        console.log(got);
+        //console.log(got);
+        let count = got.houses.reduce((sum,house) => house.people.length + sum, 0);
+        return count;
       }
 
       function peopleByHouses() {
         // your code goes here
+        let peopleByHouses = got.houses.reduce((peopleByHouse,house) => {
+          peopleByHouse[house.name] = house.people.length;
+          return peopleByHouse
+        },{});
+        return peopleByHouses;
       }
 
       function everyone() {
         // your code goes here
+        let allNames = got.houses.reduce((namesArray,house) => {
+          namesArray.push(...house.people);
+          return namesArray;
+        } ,[])
+        return allNames.map(people => people.name);
       }
 
       function nameWithS() {
         // your code goes here
+        let namesWithS = everyone().reduce((namesWithS, name) => {
+          if(name.toLowerCase().includes("s")) namesWithS.push(name);
+          return namesWithS;
+        } ,[]);
+        return namesWithS;
       }
 
       function nameWithA() {
         // your code goes here
+        let namesWithA = everyone().reduce((namesWithA, name) => {
+          if(name.toLowerCase().includes("a")) namesWithA.push(name);
+          return namesWithA;
+        } ,[]);
+        return namesWithA;
       }
 
       function surnameWithS() {
         // your code goes here
+        let fullNames = everyone().reduce((nameSeparated,name) => {
+          let nameArr = name.split(" ");
+          nameSeparated.push({firstname:nameArr[0],surname:nameArr[1]});
+          return nameSeparated;
+        } ,[])
+        let surnamesWithS = fullNames.filter(names => names.surname.startsWith("S")).map(name => `${name.firstname} ${name.surname}`)
+        return surnamesWithS;
+        
       }
 
       function surnameWithA() {
         // your code goes here
+        let fullNames = everyone().reduce((nameSeparated,name) => {
+          let nameArr = name.split(" ");
+          nameSeparated.push({firstname:nameArr[0],surname:nameArr[1]});
+          return nameSeparated;
+        } ,[])
+        let surnamesWithA = fullNames.filter(names => names.surname.startsWith("A")).map(name => `${name.firstname} ${name.surname}`)
+        return surnamesWithA;
       }
 
       function peopleNameOfAllHouses() {
         // your code goes here
+        let peopleNameOfAllHouses = got.houses.reduce((peopleNameOfAllHouses,house) => {
+          peopleNameOfAllHouses[house.name] = house.people.map(person => person.name);
+          return peopleNameOfAllHouses;
+        }  ,{});
+        return peopleNameOfAllHouses;
       }
 
       // Testing your result after writing your function
